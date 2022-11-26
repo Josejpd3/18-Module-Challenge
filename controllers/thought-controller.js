@@ -23,21 +23,35 @@ const thoughtController = {
     createThought(req, res) {
         Thought.create(req.body)
         .then((thought) => {
-          return User.findOneAndUpdate(
-            { _id: req.body.userId },
+          return thought.findOneAndUpdate(
+            { _id: req.body.thoughtId },
             { $addToSet: { thoughts: thought._id } },
             { new: true }
           );
         })
-        .then((user) =>
-          !user
+        .then((thought) =>
+          !thought
             ? res.status(404).json({
-              message: 'User not found',
+              message: 'thought not found',
             })
             : res.status(200).json('New thought')
         )
         .catch((err) => {
           res.status(500).json(err);
         });
+    },
+    
+    updateThought(req, res) {
+        Thought.findOneAndUpdate(
+            { _id: req.params.thoughtId },
+            { $set: req.body },
+            { runValidators: true, new: true }
+          )
+            .then((thought) =>
+              !thought
+                ? res.status(404).json({ message: 'No thought with this id!' })
+                : res.json(thought)
+            )
+            .catch((err) => res.status(500).json(err));
     },
 }
