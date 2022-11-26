@@ -14,6 +14,8 @@ const userSchema = new Schema({
         trim: true,
         unique: true,
         lowercase: true,
+        validate: [validateEmail, 'invalid email address'],
+        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'invalid email address']
     },
     thoughts: [
         {
