@@ -12,11 +12,20 @@ const userController ={
         .select('-__v')
         .populate('thoughts')
         .populate('friends')
-        .then((User) =>
-          !User
+        .then((user) =>
+          !user
             ? res.status(404).json({ message: 'No User with that ID' })
-            : res.json(User)
+            : res.json(user)
         )
         .catch((err) => res.status(500).json(err));
+    },
+
+    createUser(req, res) {
+        User.create(req.body)
+        .then((user) => res.json(user))
+        .catch((err) => {
+          console.log(err);
+          return res.status(500).json(err);
+        });
     },
 }
