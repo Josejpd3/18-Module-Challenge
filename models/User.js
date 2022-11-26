@@ -4,6 +4,7 @@ const userSchema = new Schema({
     username: {
         type: String,
         required: true,
+        unique: true,
         max_length: 16,
         trim: true,
     },
@@ -11,6 +12,7 @@ const userSchema = new Schema({
         type: String,
         required: true,
         trim: true,
+        unique: true,
         lowercase: true,
     },
     thoughts: [
