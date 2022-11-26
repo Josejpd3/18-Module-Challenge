@@ -54,4 +54,25 @@ const thoughtController = {
             )
             .catch((err) => res.status(500).json(err));
     },
+
+    deleteThought(req, res) {
+        Thought.findOneAndRemove({ _id: req.params.thoughtId })
+        .then((thought) =>
+          !thought
+            ? res.status(404).json({ message: 'No thought with this id!' })
+            : User.findOneAndUpdate(
+              { thoughts: req.params.thoughtId },
+              { $pull: { thoughts: req.params.thoughtId } },
+              { new: true }
+            )
+        )
+        .then((user) =>
+          !user
+            ? res
+              .status(404)
+              .json({ message: 'User not found' })
+            : res.status(200).json({ message: 'Thought deleted!' })
+        )
+        .catch((err) => res.status(500).json(err));
+    },
 }
