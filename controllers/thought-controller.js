@@ -29,8 +29,8 @@ const thoughtController = {
             { new: true }
           );
         })
-        .then((thought) =>
-          !thought
+        .then((user) =>
+          !user
             ? res.status(404).json({
               message: 'thought not found',
             })
